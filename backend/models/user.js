@@ -2,9 +2,10 @@ const mongoose = require("mongoose")
 const Schema = mongoose.Schema
 
 const UserSchema = new Schema({
-  "cin":String,
+  "email":String,
   "nom":String,
-  "nom":String,
+  "prenom":String,
+  "phone":String,
   "age":Number
 })
 

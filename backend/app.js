@@ -23,14 +23,20 @@ mongoose.connect(MONGODB_URL)
   console.log(`${error}`);
 })
 
-app.post('/api', async(req,res)=>{
-  const {email,password,confirmPassword,firstName,lastName,phone} = req.body
+app.post('/add', async(req,res)=>{
+  const {email,password,confirmPassword,firstName,lastName,phone,age} = req.body
   const NewUser = new User()
-  NewUser.cin = email
+  NewUser.email = email
   NewUser.nom = lastName
   NewUser.prenom = firstName
-  NewUser.age = 20
+  NewUser.phone = phone
+  NewUser.age = age
   await NewUser.save()
   console.log("test work")
   res.json({ message: "test is work" ,"data":req.body});
+})
+
+app.get('/read', async (req,res) => {
+  const AllUsers = await User.find()
+  res.send(AllUsers)
 })
