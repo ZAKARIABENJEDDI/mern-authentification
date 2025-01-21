@@ -20,4 +20,17 @@ routes.get('/read', async (req,res) => {
   res.send(AllUsers)
 })
 
+
+routes.get('/find', async (req,res) => {
+  const {id} = req.body
+  try {
+    const SpecificUser = await User.findById(id)
+    res.send(SpecificUser)
+    return
+  } catch (error) {
+    res.send(error)
+  }
+})
+
+
 module.exports = routes
