@@ -67,6 +67,21 @@ export default function Form() {
         })
     }
   }
+
+  const Supprimer = (id) => {
+    console.log("Suppression de l'utilisateur avec l'ID:", id);
+    // Ajouter ici la logique de suppression, par exemple :
+    // axios.delete(`http://localhost:3000/delete/${id}`)
+    //   .then((res) => {
+    //     console.log("Utilisateur supprimé:", res.data);
+    //     // Optionnellement, vous pouvez mettre à jour l'état pour enlever l'utilisateur de la liste.
+    //   })
+    //   .catch((err) => {
+    //     console.error("Erreur lors de la suppression:", err);
+    //   });
+  }
+  
+
   return (
     <div className="relative z-10">
       {error ? (
@@ -127,7 +142,7 @@ export default function Form() {
         ) : (
           <div>
             <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
-              <UserTabl users={users} />
+              <UserTabl users={users} action={Supprimer} />
             </div>
           </div>
         )}

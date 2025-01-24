@@ -1,4 +1,5 @@
-export default function UserTabl({ users }) {
+export default function UserTabl({ users ,action}) {
+  
   return (
     <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
       <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
@@ -17,6 +18,9 @@ export default function UserTabl({ users }) {
           </th>
           <th scope="col" className="px-6 py-3">
             Phone
+          </th>
+          <th scope="col" className="px-6 py-3">
+            Action
           </th>
         </tr>
       </thead>
@@ -37,6 +41,11 @@ export default function UserTabl({ users }) {
             </td>
             <td className="px-6 py-4">
               {user.phone}
+            </td>
+            <td className="px-6 py-4">
+              <button onClick={() => action(user.email)} className="bg-red-500 px-4 text-white py-2 rounded-lg">
+                Supprimer
+              </button>
             </td>
           </tr>
         ))}

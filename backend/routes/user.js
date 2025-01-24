@@ -32,5 +32,40 @@ routes.get('/find', async (req,res) => {
   }
 })
 
+routes.post('/addUser', async (req,res) => {
+  const {email ,password} = req.body
+  try {
+    const FindUser = await User.findOne({email,password})
+    if (FindUser) {
+      res.status(200).json({message:"User Alredy Exist"})
+      return
+    }else{
+      try {
+        const newUser = new User()
+        newUser.email = email
+        newUser.password = password
+        await newUser.save()
+        res.json({message :"User Ajouter Avec Success"})
+      } catch (error) {
+        res.json({message :"Error lors de l'ajout "})
+      }
+    }
+  } catch (error) {
+    res.status(500).json({message:"User Non Trouver"})
+  }
+})
+
+routes.post("/getUser", async (req,res) => {
+  const {email, password} = req.body
+  try {
+    const user = await User.findOne({email, password})
+    if (!user) {
+      return res.status(404).json({message: "Aucun User Trouver"})
+    }
+    res.status(200).json({message:"User Trouver !",user})
+  } catch (error) {
+    res.status(500).json({error:error.message})
+  }
+})
 
 module.exports = routes
