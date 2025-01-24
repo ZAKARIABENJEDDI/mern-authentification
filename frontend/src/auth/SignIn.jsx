@@ -3,14 +3,63 @@ import { useRef, useState } from "react"
 import { Oval } from 'react-loader-spinner';
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import Modal from 'react-modal';
+Modal.setAppElement('#root');
 
 export default function SignIn() {
   const email = useRef("")
   const password = useRef("")
   const confirPassword = useRef("")
+  const [Code, SetCode] = useState(false)
+  const [CodeDB, SetCodeDB] = useState(false)
   const [error, SetError] = useState("")
   const [loading, setloading] = useState(false)
+  const [UserExist, SetUserExist] = useState(false)
+  const closeModal = () => SetUserExist(false);
 
+  const handleSubmitModal = (e) => {
+    e.preventDefault();
+    console.log(CodeDB.length);
+    if (CodeDB.length === 0) {
+      toast.error("Entrer le code", {
+        position: "top-center",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+      });
+    }else{
+      if (Code === CodeDB) {
+        toast.success("Welcome", {
+          position: "top-right",
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "colored",
+        });
+        setTimeout(() => {
+          closeModal();
+        }, 2000);
+      }else{
+        toast.error("code incorrecte", {
+          position: "top-center",
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "colored",
+        });
+      }
+    }
+  }
   const handelSubmit = (event) => {
     event.preventDefault();
 
@@ -36,17 +85,32 @@ export default function SignIn() {
     setloading(true)
     axios.post("http://localhost:3000/addUser", userData)
       .then((res) => {
-        console.log(res.data.message);
-        toast.success(res.data.message, {
-          position: "top-right",
-          autoClose: 3000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "colored",
-        });
+        if (!res.data.code) {
+          toast.success(res.data.message, {
+            position: "top-right",
+            autoClose: 3000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "colored",
+          });
+        } else {
+          SetUserExist(true)
+          SetCodeDB(res.data.code)
+          toast.warning(res.data.message, {
+            position: "top-right",
+            autoClose: 3000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "colored",
+          });
+
+        }
         setloading(false)
       })
       .catch((err) => {
@@ -65,9 +129,9 @@ export default function SignIn() {
         setloading(false)
       });
   };
+
   return (
     <>
-
       <div className="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8">
         <div className="sm:mx-auto sm:w-full sm:max-w-sm">
           <h2 className="mt-10 text-center text-2xl/9 font-bold tracking-tight text-gray-900">
@@ -112,6 +176,7 @@ export default function SignIn() {
                 />
               </div>
             </div>
+
             <div>
               <div className="flex items-center justify-between">
                 <label htmlFor="password" className="block text-sm/6 font-medium text-gray-900">
@@ -130,6 +195,7 @@ export default function SignIn() {
                 />
               </div>
             </div>
+
             <div>
               <button
                 type="submit"
@@ -147,18 +213,39 @@ export default function SignIn() {
                       strokeWidth={4}
                       strokeWidthSecondary={4}
                     />
-                  ) : 'Sing Up'
+                  ) : 'Sign Up'
                 }
               </button>
             </div>
           </form>
 
           <p className="mt-5 text-center text-sm/6 text-gray-500">
-            Alredy have account ?
+            Already have an account?
             <a href="login" className="mx-4 font-semibold text-sky-950 hover:text-sky-800">
               Login
             </a>
           </p>
+
+          {
+            UserExist ? (
+              <Modal isOpen={true}>
+                <div className="flex flex-col min-h-screen overflow-hidden">
+                  <div className="flex justify-center items-center flex-grow">
+                    <div className="block">
+                      <input
+                        placeholder="Your input here"
+                        onChange={(e)=> SetCode(e.target.value)}
+                      />
+                      <div className="inline">
+                        <button className="bg-slate-700 rounded-lg text-white py-2 px-3 mx-4" onClick={handleSubmitModal}>Submit</button>
+                        <button className="bg-slate-700 rounded-lg text-white py-2 px-3 mx-4" onClick={closeModal}>Cancel</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </Modal>
+            ) : ''
+          }
         </div>
       </div>
       <ToastContainer />

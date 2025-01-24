@@ -20,7 +20,7 @@ export default function Login() {
       password: passwordValue
     }
     setloading(true);
-    axios.post("http://localhost:3000/getUser", UserInfo)
+    axios.post("http://localhost:3000/Login", UserInfo)
       .then((res) => {
         toast.success(res.data.message, {
           position: "top-right",
@@ -122,8 +122,8 @@ export default function Login() {
 
           <p className="mt-5 text-center text-sm/6 text-gray-500">
             Alredy have account ?
-            <a href="login" className="mx-4 font-semibold text-sky-950 hover:text-sky-800">
-              Login
+            <a href="signin" className="mx-4 font-semibold text-sky-950 hover:text-sky-800">
+              Sing Up
             </a>
           </p>
         </div>

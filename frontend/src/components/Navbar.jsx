@@ -8,6 +8,7 @@ export default function Navbar() {
         <div className="flex items-center">
           <Link className="mx-5" to="/signin">Sing Up</Link>
           <Link className="mx-5" to="/login">Login</Link>
+          <Link className="mx-5" to="/welcome">Welcome</Link>
         </div>
       </div>
       <section className="flex justify-center items-center flex-grow">

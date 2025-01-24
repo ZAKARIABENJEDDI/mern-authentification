@@ -37,7 +37,7 @@ routes.post('/addUser', async (req,res) => {
   try {
     const FindUser = await User.findOne({email,password})
     if (FindUser) {
-      res.status(200).json({message:"User Alredy Exist"})
+      res.json({message:"User Alredy Exist Entrer Le code Envoyer",code:'0000'})
       return
     }else{
       try {
@@ -55,7 +55,7 @@ routes.post('/addUser', async (req,res) => {
   }
 })
 
-routes.post("/getUser", async (req,res) => {
+routes.post("/Login", async (req,res) => {
   const {email, password} = req.body
   try {
     const user = await User.findOne({email, password})
